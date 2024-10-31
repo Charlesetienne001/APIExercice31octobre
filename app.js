@@ -6,10 +6,7 @@ const port = 3000;
 
 app.use(bodyParser.json());
 
-// expliquer ce que fait une commande (ex : GET)
-// montrer la réponse (ex : GET) : le résultat du GET
-
-// Tableaux des rendez-vous :
+// Tableaux des rendez-vous : --------------------------------------------------
 let desRendezVous = [
   {
     id: 0,
@@ -34,15 +31,15 @@ let desRendezVous = [
   },
 ];
 
-// Tableaux des spécialistes :
+// Tableaux des spécialistes : --------------------------------------------------
 let desSpecialistes = [
   { id: 0, nom: "Alexandre", domaine: "coiffeur" },
   { id: 1, nom: "Antoine", domaine: "coiffeur" },
   { id: 3, nom: "Justyn", domaine: "coiffeur" },
 ];
 
-// Tableaux des clients :
-let clients = [
+// Tableaux des clients : --------------------------------------------------
+let desClients = [
   { id: 0, nom: "Rayan", telephone: "111-111-1111", email: "rayan@gmail.com" },
   {
     id: 1,
@@ -58,7 +55,7 @@ let clients = [
   },
 ];
 
-// Rendez-vous :
+// Rendez-vous : --------------------------------------------------
 // Voir tous les rendez-vous :
 app.get("/desRendezVous", (req, res) => {
   const taskReferences = desRendezVous.map(
@@ -121,7 +118,7 @@ app.delete("/rendezVous/:id", (req, res) => {
   res.json({ message: "Rendez-vous supprimé avec succès" });
 });
 
-// Spécialistes :
+// Spécialistes : --------------------------------------------------
 // Voir tous les spécialistes :
 app.get("/desSpecialistes", (req, res) => {
   const taskReferences = desSpecialistes.map(
@@ -144,6 +141,22 @@ app.get("/specialiste/:id", (req, res) => {
 });
 
 // Clients :
+// Voir des clients :
+app.get("/desClients", (req, res) => {
+  const taskReferences = desClients.map((client) => `/client/${client.id}`);
+  res.json(taskReferences);
+});
+
+// Voir un client :
+app.get("/client/:id", (req, res) => {
+  const clientId = parseInt(req.params.id);
+  const client = desClients.find((client) => client.id === clientId);
+  if (client) {
+    res.json(client);
+  } else {
+    res.status(404).json({ error: "Client non trouvé" });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Serveur écoutant sur le port ${port}`);
