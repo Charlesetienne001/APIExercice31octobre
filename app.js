@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 // montrer la réponse (ex : GET) : le résultat du GET
 
 // Tableaux des rendez-vous :
-let rendezVous = [
+let desRendezVous = [
   {
     id: 0,
     date: "2024-10-31",
@@ -59,7 +59,67 @@ let clients = [
 ];
 
 // Rendez-vous :
+// Voir tous les rendez-vous :
+app.get("/desRendezVous", (req, res) => {
+  const taskReferences = desRendezVous.map(
+    (rendezVous) => `/rendezVous/${rendezVous.id}`
+  );
+  res.json(taskReferences);
+});
 
+// Voir un rendez-vous :
+app.get("/rendezVous/:id", (req, res) => {
+  const rendezVousId = parseInt(req.params.id);
+  const rendezVous = desRendezVous.find(
+    (rendezVous) => rendezVous.id === rendezVousId
+  );
+  if (rendezVous) {
+    res.json(rendezVous);
+  } else {
+    res.status(404).json({ error: "Rendez-vous non trouvé" });
+  }
+});
+
+// Ajouter un rendez-vous :
+app.post("/rendezVous", (req, res) => {
+  const newRendezVous = {
+    id: desRendezVous.length + 1,
+    description: req.body.description,
+  };
+  desRendezVous.push(newRendezVous);
+  res.status(201).json({
+    message: "Rendez-vous ajouté avec succès",
+    rendezVous: newRendezVous,
+  });
+});
+
+// Modifier un rendez-vous :
+app.put("/rendezVous/:id", (req, res) => {
+  const rendezVousId = parseInt(req.params.id);
+  const rendezVous = desRendezVous.find(
+    (rendezVous) => rendezVous.id === rendezVousId
+  );
+
+  if (rendezVous) {
+    rendezVous.id = req.body.id;
+    rendezVous.date = req.body.date;
+    rendezVous.heure = req.body.heure;
+    rendezVous.telephoneClient = req.body.telephoneClient;
+    rendezVous.client = req.body.client;
+    res.json({ message: "Rendez-vous mis à jour avec succès", rendezVous });
+  } else {
+    res.status(404).json({ error: "Rendez-vous non trouvé" });
+  }
+});
+
+// Supprimer un rendez-vous :
+app.delete("/rendezVous/:id", (req, res) => {
+  const rendezVousId = parseInt(req.params.id);
+  desRendezVous = desRendezVous.filter(
+    (rendezVous) => rendezVous.id !== rendezVousId
+  );
+  res.json({ message: "Rendez-vous supprimé avec succès" });
+});
 
 // Spécialistes :
 
