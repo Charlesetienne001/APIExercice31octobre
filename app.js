@@ -80,7 +80,7 @@ app.get("/rendezVous/:id", (req, res) => {
 // Ajouter un rendez-vous :
 app.post("/rendezVous", (req, res) => {
   const newRendezVous = {
-    id: desRendezVous.length + 1,
+    id: req.body.id,
     description: req.body.description,
   };
   desRendezVous.push(newRendezVous);
