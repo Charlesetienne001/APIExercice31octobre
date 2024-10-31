@@ -35,7 +35,7 @@ let desRendezVous = [
 ];
 
 // Tableaux des spécialistes :
-let specialistes = [
+let desSpecialistes = [
   { id: 0, nom: "Alexandre", domaine: "coiffeur" },
   { id: 1, nom: "Antoine", domaine: "coiffeur" },
   { id: 3, nom: "Justyn", domaine: "coiffeur" },
@@ -122,6 +122,26 @@ app.delete("/rendezVous/:id", (req, res) => {
 });
 
 // Spécialistes :
+// Voir tous les spécialistes :
+app.get("/desSpecialistes", (req, res) => {
+  const taskReferences = desSpecialistes.map(
+    (specialiste) => `/specialiste/${specialiste.id}`
+  );
+  res.json(taskReferences);
+});
+
+// Voir un spécialiste :
+app.get("/specialiste/:id", (req, res) => {
+  const specialisteId = parseInt(req.params.id);
+  const specialiste = desSpecialistes.find(
+    (specialiste) => specialiste.id === specialisteId
+  );
+  if (specialiste) {
+    res.json(specialiste);
+  } else {
+    res.status(404).json({ error: "Spécialiste non trouvé" });
+  }
+});
 
 // Clients :
 
