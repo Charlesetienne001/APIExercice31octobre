@@ -140,7 +140,7 @@ app.get("/specialiste/:id", (req, res) => {
   }
 });
 
-// Clients :
+// Clients : --------------------------------------------------
 // Voir des clients :
 app.get("/desClients", (req, res) => {
   const taskReferences = desClients.map((client) => `/client/${client.id}`);
